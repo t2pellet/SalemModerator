@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import settingsReducer from './slices/settings';
+import playersReducer from './slices/players';
 
 const persistConfig = {
     key: 'root',
@@ -9,7 +10,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    settings: settingsReducer
+    settings: settingsReducer,
+    players: playersReducer
 });
 
 export const store = configureStore({
