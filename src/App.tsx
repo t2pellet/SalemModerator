@@ -3,20 +3,23 @@ import { Provider } from 'react-redux';
 import { registerRootComponent } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { store } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './redux/store';
 import SettingsPage from './pages/SettingsPage';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
     return (
-        <NavigationContainer>
-            <Provider store={store}>
-                <Stack.Navigator>
-                    <Stack.Screen name="Settings" component={SettingsPage} />
-                </Stack.Navigator>
-            </Provider>
-        </NavigationContainer>
+        <Provider store={store}>
+            <PersistGate persistor={persistor} loading={null}>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name="Settings" component={SettingsPage} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </PersistGate>
+        </Provider>
     );
 }
 

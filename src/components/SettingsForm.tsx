@@ -1,9 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-type SettingsProps = {
+export interface SettingsProps {
+    initialState: {
+        playerCount: number;
+        constableEnabled: boolean;
+    };
     onSettingsSubmit: (data) => void;
-};
+}
 
 export default function SettingsForm(props: SettingsProps) {
     const {
@@ -11,7 +15,10 @@ export default function SettingsForm(props: SettingsProps) {
         handleSubmit,
         formState: { errors }
     } = useForm();
-    const { onSettingsSubmit } = props;
+    const {
+        initialState: { playerCount, constableEnabled },
+        onSettingsSubmit
+    } = props;
 
     return (
         <form onSubmit={handleSubmit(onSettingsSubmit)}>
@@ -20,7 +27,7 @@ export default function SettingsForm(props: SettingsProps) {
                 <input
                     name="playerCount"
                     {...register('playerCount', { required: true })}
-                    defaultValue={4}
+                    defaultValue={playerCount}
                     type="text"
                 />
             </div>
@@ -30,7 +37,7 @@ export default function SettingsForm(props: SettingsProps) {
                 <input
                     name="constableEnabled"
                     {...register('constableEnabled')}
-                    defaultValue={0}
+                    defaultChecked={constableEnabled}
                     type="checkbox"
                 />
             </div>
