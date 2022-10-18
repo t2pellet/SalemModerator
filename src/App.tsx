@@ -1,21 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
 import { registerRootComponent } from 'expo';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { store } from './redux/store';
+import SettingsPage from './pages/SettingsPage';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});
+const Stack = createNativeStackNavigator();
 
 function App() {
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-        </View>
+        <NavigationContainer>
+            <Provider store={store}>
+                <Stack.Navigator>
+                    <Stack.Screen name="Settings" component={SettingsPage} />
+                </Stack.Navigator>
+            </Provider>
+        </NavigationContainer>
     );
 }
 
