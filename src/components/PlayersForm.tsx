@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { PlayersState } from '../redux/slices/players';
 
 export interface PlayersProps {
-    players: string[];
+    players: PlayersState;
     onPlayersSubmit: (data: any) => void;
 }
 
@@ -12,10 +13,13 @@ type PlayersData = {
 };
 
 export default function PlayersForm(props: PlayersProps) {
-    const { onPlayersSubmit, players } = props;
+    const {
+        onPlayersSubmit,
+        players: { list }
+    } = props;
     const { register, control, handleSubmit } = useForm<PlayersData>({
         defaultValues: {
-            players: players.map((name) => ({ name }))
+            players: list.map((name) => ({ name }))
         }
     });
     const { fields } = useFieldArray<PlayersData>({ control, name: 'players' });
