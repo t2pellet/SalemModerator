@@ -11,7 +11,7 @@ function PlayersPage({ navigation }: NativeStackScreenProps<any>) {
 
     const handleSubmit = (data) => {
         dispatch(submitPlayers(data.players));
-        navigation.navigate('Audio');
+        navigation.navigate('Dawn');
     };
 
     return (
