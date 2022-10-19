@@ -3,11 +3,13 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface SettingsState {
     playerCount: number;
+    delayTime: number;
     constableEnabled: boolean;
 }
 
 const initialState: SettingsState = {
     playerCount: 4,
+    delayTime: 10,
     constableEnabled: true
 };
 
