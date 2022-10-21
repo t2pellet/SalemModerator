@@ -37,7 +37,7 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
     const [stepIndex, setStepIndex] = React.useState(0);
     const { navigation } = props;
     const players = useAppSelector((state) => state.data.players);
-    const delayTime = useAppSelector((state) => state.data.settings.delayTime);
+    const { delayTime, constableEnabled } = useAppSelector((state) => state.data.settings);
     const dispatch = useAppDispatch();
     const setTimer = (key: string) => dispatch(startTimer(key));
     const step = steps[stepIndex];
@@ -68,7 +68,13 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
                     time={delayTime}
                     onTimeEnded={() => {
                         if (step.key === StepEnum.NIGHT_END) navigation.navigate('Day');
-                        else setStepIndex(stepIndex + 1);
+                        else {
+                            const nextIndex =
+                                constableEnabled && step.key === StepEnum.WITCH_END
+                                    ? stepIndex + 1
+                                    : stepIndex + 3;
+                            setStepIndex(nextIndex);
+                        }
                     }}
                 />
                 <AudioPlayer
