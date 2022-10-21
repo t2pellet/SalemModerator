@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { submitPlayers } from '../redux/slices/players';
 
 function PlayersPage({ navigation }: NativeStackScreenProps<any>) {
-    const players = useAppSelector((state) => state.players);
+    const players = useAppSelector((state) => state.data.players);
     const dispatch = useAppDispatch();
 
     const handleSubmit = (data) => {

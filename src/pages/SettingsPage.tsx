@@ -7,7 +7,7 @@ import SettingsForm from '../components/SettingsForm';
 import { setPlayers } from '../redux/slices/players';
 
 function SettingsPage({ navigation }: NativeStackScreenProps<any>) {
-    const initialState = useAppSelector((state) => state.settings);
+    const initialState = useAppSelector((state) => state.data.settings);
     const dispatch = useAppDispatch();
 
     const handleSubmit = (data) => {

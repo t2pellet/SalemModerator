@@ -3,19 +3,23 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import settingsReducer from './slices/settings';
 import playersReducer from './slices/players';
+import timerReducer from './slices/timer';
 
 const persistConfig = {
     key: 'root',
     storage
 };
 
-const rootReducer = combineReducers({
+const persistentReducers = combineReducers({
     settings: settingsReducer,
     players: playersReducer
 });
 
 export const store = configureStore({
-    reducer: persistReducer(persistConfig, rootReducer),
+    reducer: {
+        data: persistReducer(persistConfig, persistentReducers),
+        timer: timerReducer
+    },
     devTools: process.env.NODE_ENV !== 'production'
 });
 
