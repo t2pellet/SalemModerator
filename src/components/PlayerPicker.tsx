@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react';
-import { PlayersState, setPicked } from '../redux/slices/players';
+import { PlayerPicks, PlayersState, setPicked } from '../redux/slices/players';
 import { useAppDispatch } from '../redux/hooks';
 
 interface PickerProps {
     players: PlayersState;
+    pickedFor: PlayerPicks;
     onPlayerPicked: (name: string) => void;
 }
 
 export default function PlayerPicker(props: PickerProps) {
     const {
         players: { list },
+        pickedFor,
         onPlayerPicked
     } = props;
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const defaultPick = list[0];
-        dispatch(setPicked(defaultPick));
-    }, [dispatch, list]);
+        dispatch(setPicked({ name: defaultPick, pickedFor }));
+    }, [dispatch, list, pickedFor]);
 
     return (
         <div className="playerPicker">
@@ -26,7 +28,7 @@ export default function PlayerPicker(props: PickerProps) {
                     key={player}
                     type="button"
                     onClick={() => {
-                        dispatch(setPicked(player));
+                        dispatch(setPicked({ name: player, pickedFor }));
                         onPlayerPicked(player);
                     }}>
                     {player}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PlayerPicker from '../components/PlayerPicker';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -7,6 +7,7 @@ import DisplayPlayer from '../components/DisplayPlayer';
 import Timer from '../components/Timer';
 import AudioPlayer from '../components/audio/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
+import { PlayerPicks } from '../redux/slices/players';
 
 enum Step {
     DAWN_START = 'dawn_start',
@@ -23,7 +24,7 @@ const soundMap = {
 };
 
 function DawnPage(props: NativeStackScreenProps<any>) {
-    const [step, setStep] = useState(Step.DAWN_START);
+    const [step, setStep] = React.useState(Step.DAWN_START);
     const { navigation } = props;
     const players = useAppSelector((state) => state.data.players);
     const delayTime = useAppSelector((state) => state.data.settings.delayTime);
@@ -53,6 +54,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
                     <PlayerPicker
                         players={players}
                         onPlayerPicked={() => setStep(Step.WITCH_END)}
+                        pickedFor={PlayerPicks.BLACK_CAT}
                     />
                     <AudioPlayer audioFile={soundMap[step]} onAudioEnded={() => setTimer(step)} />
                 </>
