@@ -5,6 +5,7 @@ import { clearTimer } from '../redux/slices/timer';
 interface TimerProps {
     timerKey: string;
     time: number;
+    autoStart?: boolean;
     onTimeEnded: () => void;
     clearTimerState: typeof clearTimer;
     activeTimers: string[];
@@ -16,6 +17,10 @@ interface TimerState {
 
 class Timer extends React.Component<TimerProps, TimerState> {
     private interval: NodeJS.Timer;
+
+    static defaultProps = {
+        autoStart: false
+    };
 
     constructor(props: TimerProps) {
         super(props);
@@ -49,9 +54,9 @@ class Timer extends React.Component<TimerProps, TimerState> {
     }
 
     isActive(): boolean {
-        const { timerKey, activeTimers } = this.props;
+        const { timerKey, activeTimers, autoStart } = this.props;
 
-        return timerKey in activeTimers;
+        return autoStart || timerKey in activeTimers;
     }
 
     startTimer() {
