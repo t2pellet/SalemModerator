@@ -5,6 +5,15 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { PlayerPicks, resetPick } from '../redux/slices/players';
 import DisplayPlayer from '../components/DisplayPlayer';
 import Timer from '../components/Timer';
+import { startTimer } from '../redux/slices/timer';
+import AudioPlayer from '../components/audio/AudioPlayer';
+import { actions } from '../utils/sounds';
+
+const actionSoundMap = {
+    [PlayerPicks.BLACK_CAT]: actions.blackCat,
+    [PlayerPicks.GAVEL]: actions.gavel,
+    [PlayerPicks.KILLED]: actions.killed
+};
 
 export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
     const { picks } = useAppSelector((state) => state.data.players);
@@ -16,8 +25,11 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
             <Timer
                 timerKey={pick.toString()}
                 time={delayTime}
-                autoStart
                 onTimeEnded={() => dispatch(resetPick(pick))}
+            />
+            <AudioPlayer
+                audioFile={actionSoundMap[pick]}
+                onAudioEnded={() => dispatch(startTimer(pick.toString()))}
             />
             <DisplayPlayer playerName={name} description={description} />
         </>

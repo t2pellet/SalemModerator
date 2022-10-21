@@ -34,7 +34,7 @@ export default function SettingsForm(props: SettingsProps) {
                 <label htmlFor="delayTime">Delay Time</label>
                 <input
                     name="delayTime"
-                    {...register('delayTime', { required: true, min: 5, max: 30 })}
+                    {...register('delayTime', { required: true, min: 2, max: 30 })}
                     type="text"
                 />
             </div>
