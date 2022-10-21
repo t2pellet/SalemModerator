@@ -3,7 +3,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PlayerPicker from '../components/PlayerPicker';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { dawn } from '../utils/sounds';
-import DisplayPlayer from '../components/DisplayPlayer';
 import Timer from '../components/Timer';
 import AudioPlayer from '../components/audio/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
@@ -36,7 +35,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
             return (
                 <>
                     <Timer
-                        timerKey={Step.DAWN_START}
+                        timerKey={step}
                         time={delayTime}
                         onTimeEnded={() => setStep(Step.WITCH_START)}
                     />
@@ -47,7 +46,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
             return (
                 <>
                     <Timer
-                        timerKey={Step.WITCH_START}
+                        timerKey={step}
                         time={delayTime}
                         onTimeEnded={() => setStep(Step.WITCH_END)}
                     />
@@ -63,7 +62,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
             return (
                 <>
                     <Timer
-                        timerKey={Step.WITCH_END}
+                        timerKey={step}
                         time={delayTime}
                         onTimeEnded={() => setStep(Step.DAWN_END)}
                     />
@@ -73,15 +72,10 @@ function DawnPage(props: NativeStackScreenProps<any>) {
         case Step.DAWN_END:
         default:
             return (
-                <>
-                    <Timer
-                        timerKey={Step.DAWN_END}
-                        time={delayTime}
-                        onTimeEnded={() => navigation.navigate('Day')}
-                    />
-                    <DisplayPlayer playerName={players.picked} description="Black Cat" />
-                    <AudioPlayer audioFile={soundMap[step]} onAudioEnded={() => setTimer(step)} />
-                </>
+                <AudioPlayer
+                    audioFile={soundMap[step]}
+                    onAudioEnded={() => navigation.navigate('Day')}
+                />
             );
     }
 }
