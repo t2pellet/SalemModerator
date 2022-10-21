@@ -10,6 +10,7 @@ import SettingsPage from './pages/SettingsPage';
 import PlayersPage from './pages/PlayersPage';
 import DawnPage from './pages/DawnPage';
 import DayPage from './pages/DayPage';
+import NightPage from './pages/NightPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ function App() {
                             <Stack.Screen name="Players" component={PlayersPage} />
                             <Stack.Screen name="Dawn" component={DawnPage} />
                             <Stack.Screen name="Day" component={DayPage} />
+                            <Stack.Screen name="Night" component={NightPage} />
                         </Stack.Navigator>
                     </View>
                 </NavigationContainer>
