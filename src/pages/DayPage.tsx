@@ -1,5 +1,6 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { PlayerPicks, resetPick } from '../redux/slices/players';
 import DisplayPlayer from '../components/DisplayPlayer';
@@ -27,6 +28,10 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
         const gavelToken = picks[PlayerPicks.GAVEL];
         const killed = picks[PlayerPicks.KILLED];
 
+        console.log(
+            `rendering day -- black cat: ${blackCat}, gavel token: ${gavelToken}, killed: ${killed}`
+        );
+
         if (blackCat) {
             return renderDisplay(PlayerPicks.BLACK_CAT, 'Black Cat', blackCat);
         }
@@ -44,9 +49,11 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
     };
 
     return (
-        <div className="dayPage">
-            <h1>Daytime</h1>
-            {renderBody()}
-        </div>
+        <View>
+            <div className="dayPage">
+                <h1>Daytime</h1>
+                {renderBody()}
+            </div>
+        </View>
     );
 }

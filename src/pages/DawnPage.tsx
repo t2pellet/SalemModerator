@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PlayerPicker from '../components/PlayerPicker';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -30,54 +31,67 @@ function DawnPage(props: NativeStackScreenProps<any>) {
     const dispatch = useAppDispatch();
     const setTimer = (key: string) => dispatch(startTimer(key));
 
-    switch (step) {
-        case Step.DAWN_START:
-            return (
-                <>
-                    <Timer
-                        timerKey={step}
-                        time={delayTime}
-                        onTimeEnded={() => setStep(Step.WITCH_START)}
+    const renderFromStep = () => {
+        switch (step) {
+            case Step.DAWN_START:
+                return (
+                    <>
+                        <Timer
+                            timerKey={step}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.WITCH_START)}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
+                );
+            case Step.WITCH_START:
+                return (
+                    <>
+                        <Timer
+                            timerKey={step}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.WITCH_END)}
+                        />
+                        <PlayerPicker
+                            players={players}
+                            onPlayerPicked={() => setStep(Step.WITCH_END)}
+                            pickedFor={PlayerPicks.BLACK_CAT}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
+                );
+            case Step.WITCH_END:
+                return (
+                    <>
+                        <Timer
+                            timerKey={step}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.DAWN_END)}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
+                );
+            case Step.DAWN_END:
+            default:
+                return (
+                    <AudioPlayer
+                        audioFile={soundMap[step]}
+                        onAudioEnded={() => navigation.navigate('Day')}
                     />
-                    <AudioPlayer audioFile={soundMap[step]} onAudioEnded={() => setTimer(step)} />
-                </>
-            );
-        case Step.WITCH_START:
-            return (
-                <>
-                    <Timer
-                        timerKey={step}
-                        time={delayTime}
-                        onTimeEnded={() => setStep(Step.WITCH_END)}
-                    />
-                    <PlayerPicker
-                        players={players}
-                        onPlayerPicked={() => setStep(Step.WITCH_END)}
-                        pickedFor={PlayerPicks.BLACK_CAT}
-                    />
-                    <AudioPlayer audioFile={soundMap[step]} onAudioEnded={() => setTimer(step)} />
-                </>
-            );
-        case Step.WITCH_END:
-            return (
-                <>
-                    <Timer
-                        timerKey={step}
-                        time={delayTime}
-                        onTimeEnded={() => setStep(Step.DAWN_END)}
-                    />
-                    <AudioPlayer audioFile={soundMap[step]} onAudioEnded={() => setTimer(step)} />
-                </>
-            );
-        case Step.DAWN_END:
-        default:
-            return (
-                <AudioPlayer
-                    audioFile={soundMap[step]}
-                    onAudioEnded={() => navigation.navigate('Day')}
-                />
-            );
-    }
+                );
+        }
+    };
+
+    return <View>{renderFromStep()}</View>;
 }
 
 export default DawnPage;

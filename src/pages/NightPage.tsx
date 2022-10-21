@@ -1,6 +1,7 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AVPlaybackSource } from 'expo-av';
+import { View } from 'react-native';
 import { night } from '../utils/sounds';
 import Timer from '../components/Timer';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -60,20 +61,22 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
     };
 
     return (
-        <div className="night-page">
-            <Timer
-                timerKey={step.key}
-                time={delayTime}
-                onTimeEnded={() => {
-                    if (step.key === StepEnum.NIGHT_END) navigation.navigate('Day');
-                    else setStepIndex(stepIndex + 1);
-                }}
-            />
-            <AudioPlayer
-                audioFile={steps[stepIndex].audio}
-                onAudioEnded={() => setTimer(step.key)}
-            />
-            {renderExtra(step.key)}
-        </div>
+        <View>
+            <div className="night-page">
+                <Timer
+                    timerKey={step.key}
+                    time={delayTime}
+                    onTimeEnded={() => {
+                        if (step.key === StepEnum.NIGHT_END) navigation.navigate('Day');
+                        else setStepIndex(stepIndex + 1);
+                    }}
+                />
+                <AudioPlayer
+                    audioFile={steps[stepIndex].audio}
+                    onAudioEnded={() => setTimer(step.key)}
+                />
+                {renderExtra(step.key)}
+            </div>
+        </View>
     );
 }
