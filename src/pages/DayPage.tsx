@@ -28,10 +28,6 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
         const gavelToken = picks[PlayerPicks.GAVEL];
         const killed = picks[PlayerPicks.KILLED];
 
-        console.log(
-            `rendering day -- black cat: ${blackCat}, gavel token: ${gavelToken}, killed: ${killed}`
-        );
-
         if (blackCat) {
             return renderDisplay(PlayerPicks.BLACK_CAT, 'Black Cat', blackCat);
         }
@@ -42,7 +38,12 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
             return renderDisplay(PlayerPicks.KILLED, 'Killed by Witches', killed);
         }
         return (
-            <button type="button" onClick={() => navigation.navigate('Night')}>
+            <button
+                type="button"
+                onClick={() => {
+                    navigation.popToTop();
+                    navigation.navigate('Night');
+                }}>
                 Nighttime
             </button>
         );

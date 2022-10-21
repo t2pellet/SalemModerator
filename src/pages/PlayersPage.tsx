@@ -11,6 +11,7 @@ function PlayersPage({ navigation }: NativeStackScreenProps<any>) {
 
     const handleSubmit = (data) => {
         dispatch(submitPlayers(data.players));
+        navigation.popToTop();
         navigation.navigate('Dawn');
     };
 
