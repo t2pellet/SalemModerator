@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AVPlaybackSource } from 'expo-av';
 import PlayerPicker from '../components/PlayerPicker';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { dawn } from '../utils/sounds';
@@ -9,89 +10,67 @@ import AudioPlayer from '../components/audio/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
 import { PlayerPicks } from '../redux/slices/players';
 
-enum Step {
+enum StepEnum {
     DAWN_START = 'dawn_start',
     WITCH_START = 'dawn_witch_start',
     WITCH_END = 'dawn_witch_end',
     DAWN_END = 'dawn-end'
 }
 
-const soundMap = {
-    [Step.DAWN_START]: dawn.start,
-    [Step.WITCH_START]: dawn.witchStart,
-    [Step.WITCH_END]: dawn.witchEnd,
-    [Step.DAWN_END]: dawn.end
+type Step = {
+    key: StepEnum;
+    audio: AVPlaybackSource;
 };
 
+const steps: Step[] = [
+    { key: StepEnum.DAWN_START, audio: dawn.start },
+    { key: StepEnum.WITCH_START, audio: dawn.witchStart },
+    { key: StepEnum.WITCH_END, audio: dawn.witchEnd },
+    { key: StepEnum.DAWN_END, audio: dawn.end }
+];
+
 function DawnPage(props: NativeStackScreenProps<any>) {
-    const [step, setStep] = React.useState(Step.DAWN_START);
+    const [stepIndex, setStepIndex] = React.useState(0);
     const { navigation } = props;
     const players = useAppSelector((state) => state.data.players);
     const delayTime = useAppSelector((state) => state.data.settings.delayTime);
     const dispatch = useAppDispatch();
-    const setTimer = (key: string) => dispatch(startTimer(key));
+    const step = steps[stepIndex];
 
-    const renderFromStep = () => {
-        switch (step) {
-            case Step.DAWN_START:
-                return (
-                    <>
-                        <Timer
-                            timerKey={step}
-                            time={delayTime}
-                            onTimeEnded={() => setStep(Step.WITCH_START)}
-                        />
-                        <AudioPlayer
-                            audioFile={soundMap[step]}
-                            onAudioEnded={() => setTimer(step)}
-                        />
-                    </>
-                );
-            case Step.WITCH_START:
-                return (
-                    <>
-                        <Timer
-                            timerKey={step}
-                            time={delayTime}
-                            onTimeEnded={() => setStep(Step.WITCH_END)}
-                        />
-                        <PlayerPicker
-                            players={players}
-                            onPlayerPicked={() => setStep(Step.WITCH_END)}
-                            pickedFor={PlayerPicks.BLACK_CAT}
-                        />
-                        <AudioPlayer
-                            audioFile={soundMap[step]}
-                            onAudioEnded={() => setTimer(step)}
-                        />
-                    </>
-                );
-            case Step.WITCH_END:
-                return (
-                    <>
-                        <Timer
-                            timerKey={step}
-                            time={delayTime}
-                            onTimeEnded={() => setStep(Step.DAWN_END)}
-                        />
-                        <AudioPlayer
-                            audioFile={soundMap[step]}
-                            onAudioEnded={() => setTimer(step)}
-                        />
-                    </>
-                );
-            case Step.DAWN_END:
-            default:
-                return (
-                    <AudioPlayer
-                        audioFile={soundMap[step]}
-                        onAudioEnded={() => navigation.navigate('Day')}
+    const renderExtra = () => {
+        if (step.key === StepEnum.WITCH_START) {
+            return (
+                <>
+                    <Timer
+                        timerKey={step.key}
+                        time={delayTime}
+                        onTimeEnded={() => setStepIndex(stepIndex + 1)}
                     />
-                );
+                    <PlayerPicker
+                        players={players}
+                        onPlayerPicked={() => setStepIndex(stepIndex + 1)}
+                        pickedFor={PlayerPicks.BLACK_CAT}
+                    />
+                </>
+            );
         }
+
+        return null;
     };
 
-    return <View>{renderFromStep()}</View>;
+    return (
+        <View>
+            <AudioPlayer
+                audioFile={step.audio}
+                onAudioEnded={() => {
+                    if (step.key === StepEnum.DAWN_END) navigation.navigate('Day');
+                    else if (step.key === StepEnum.WITCH_START) dispatch(startTimer(step.key));
+                    else setStepIndex(stepIndex + 1);
+                }}
+            />
+            {renderExtra()}
+        </View>
+    );
 }
 
 export default DawnPage;
