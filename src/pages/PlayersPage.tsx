@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PlayersForm from '../components/PlayersForm';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
@@ -14,11 +13,7 @@ function PlayersPage({ navigation }: NativeStackScreenProps<any>) {
         navigation.navigate('Dawn');
     };
 
-    return (
-        <View>
-            <PlayersForm players={players} onPlayersSubmit={handleSubmit} />
-        </View>
-    );
+    return <PlayersForm players={players} onPlayersSubmit={handleSubmit} />;
 }
 
 export default PlayersPage;

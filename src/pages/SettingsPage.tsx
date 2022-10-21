@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { submitSettings } from '../redux/slices/settings';
@@ -16,11 +15,7 @@ function SettingsPage({ navigation }: NativeStackScreenProps<any>) {
         navigation.navigate('Players');
     };
 
-    return (
-        <View>
-            <SettingsForm onSettingsSubmit={handleSubmit} initialState={initialState} />
-        </View>
-    );
+    return <SettingsForm onSettingsSubmit={handleSubmit} initialState={initialState} />;
 }
 
 export default SettingsPage;
