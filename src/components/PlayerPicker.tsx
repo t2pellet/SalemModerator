@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PlayersState, setPicked } from '../redux/slices/players';
 import { useAppDispatch } from '../redux/hooks';
 
@@ -14,10 +14,16 @@ export default function PlayerPicker(props: PickerProps) {
     } = props;
     const dispatch = useAppDispatch();
 
+    useEffect(() => {
+        const defaultPick = list[0];
+        dispatch(setPicked(defaultPick));
+    }, [dispatch, list]);
+
     return (
         <div className="playerPicker">
             {list.map((player) => (
                 <button
+                    key={player}
                     type="button"
                     onClick={() => {
                         dispatch(setPicked(player));

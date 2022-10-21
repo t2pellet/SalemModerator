@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { Audio, AVPlaybackSource } from 'expo-av';
 
 interface AudioProps {
@@ -8,8 +8,8 @@ interface AudioProps {
 
 export default function AudioPlayer(props: AudioProps) {
     const { audioFile, onAudioEnded } = props;
-    const [audio, setAudio] = useState(null);
-    const playCallback = useCallback(async () => {
+    const [audio, setAudio] = React.useState(null);
+    const playCallback = React.useCallback(async () => {
         const { sound } = await Audio.Sound.createAsync(audioFile);
         sound.setOnPlaybackStatusUpdate((status) => {
             if (status.isLoaded && status.didJustFinish) onAudioEnded();
@@ -18,14 +18,10 @@ export default function AudioPlayer(props: AudioProps) {
         await sound.playAsync();
     }, [audioFile, setAudio, onAudioEnded]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         playCallback();
     }, [playCallback]);
-    useEffect(() => (audio ? () => audio.unloadAsync() : undefined), [audio]);
+    React.useEffect(() => (audio ? () => audio.unloadAsync() : undefined), [audio]);
 
-    return (
-        <div className="baseDisplay">
-            <span>Listen, bitch</span>
-        </div>
-    );
+    return null;
 }

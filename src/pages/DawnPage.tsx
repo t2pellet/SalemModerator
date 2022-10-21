@@ -1,57 +1,100 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import TimedAudioPlayer from '../components/audio/TimedAudioPlayer';
 import PlayerPicker from '../components/PlayerPicker';
-import { useAppSelector } from '../redux/hooks';
-import BlackCatPage from './BlackCatPage';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { dawn } from '../utils/sounds';
+import DisplayPlayer from '../components/DisplayPlayer';
+import Timer from '../components/Timer';
+import AudioPlayer from '../components/audio/AudioPlayer';
+import { startTimer } from '../redux/slices/timer';
 
 enum Step {
-    VAMPIRE_AUDIO,
-    VAMPIRE_PICK,
-    PLAYER_AUDIO,
-    BLACK_CAT
+    DAWN_START = 'dawn_start',
+    WITCH_START = 'dawn_witch_start',
+    WITCH_END = 'dawn_witch_end',
+    DAWN_END = 'dawn-end'
 }
-const vampireAudioSource = require('../assets/sound/dawn/vampire_audio.mp3');
-const playerAudioSource = require('../assets/sound/dawn/player_audio.mp3');
 
-type DawnProps = NativeStackScreenProps<any> & {
-    delayTime: number;
+const soundMap = {
+    [Step.DAWN_START]: dawn.start,
+    [Step.WITCH_START]: dawn.witchStart,
+    [Step.WITCH_END]: dawn.witchEnd,
+    [Step.DAWN_END]: dawn.end
 };
 
-function DawnPage(props: DawnProps) {
-    const [step, setStep] = useState(Step.VAMPIRE_AUDIO);
-    const { delayTime } = props;
-    const players = useAppSelector((state) => state.players);
+function DawnPage(props: NativeStackScreenProps<any>) {
+    const [step, setStep] = useState(Step.DAWN_START);
+    const { navigation } = props;
+    const players = useAppSelector((state) => state.data.players);
+    const delayTime = useAppSelector((state) => state.data.settings.delayTime);
+    const dispatch = useAppDispatch();
+    const setTimer = (key: string) => dispatch(startTimer(key));
 
     const renderFromStep = () => {
         switch (step) {
-            case Step.VAMPIRE_AUDIO:
+            case Step.DAWN_START:
                 return (
-                    <TimedAudioPlayer
-                        audioFile={vampireAudioSource}
-                        delayTime={delayTime * 1000}
-                        onTimeEnded={() => setStep(Step.VAMPIRE_PICK)}
-                    />
+                    <>
+                        <Timer
+                            timerKey={Step.DAWN_START}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.WITCH_START)}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
                 );
-            case Step.VAMPIRE_PICK:
+            case Step.WITCH_START:
                 return (
-                    <PlayerPicker
-                        players={players}
-                        onPlayerPicked={() => setStep(Step.PLAYER_AUDIO)}
-                    />
+                    <>
+                        <Timer
+                            timerKey={Step.WITCH_START}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.WITCH_END)}
+                        />
+                        <PlayerPicker
+                            players={players}
+                            onPlayerPicked={() => setStep(Step.WITCH_END)}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
                 );
-            case Step.PLAYER_AUDIO:
+            case Step.WITCH_END:
                 return (
-                    <TimedAudioPlayer
-                        audioFile={playerAudioSource}
-                        delayTime={delayTime * 1000}
-                        onTimeEnded={() => setStep(Step.BLACK_CAT)}
-                    />
+                    <>
+                        <Timer
+                            timerKey={Step.WITCH_END}
+                            time={delayTime}
+                            onTimeEnded={() => setStep(Step.DAWN_END)}
+                        />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
                 );
-            case Step.BLACK_CAT:
+            case Step.DAWN_END:
             default:
-                return <BlackCatPage />;
+                return (
+                    <>
+                        <Timer
+                            timerKey={Step.DAWN_END}
+                            time={delayTime}
+                            onTimeEnded={() => navigation.navigate('Day')}
+                        />
+                        <DisplayPlayer playerName={players.picked} description="Black Cat" />
+                        <AudioPlayer
+                            audioFile={soundMap[step]}
+                            onAudioEnded={() => setTimer(step)}
+                        />
+                    </>
+                );
         }
     };
 
