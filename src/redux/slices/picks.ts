@@ -7,18 +7,10 @@ export enum PlayerPicks {
     KILLED = 'killed'
 }
 
-export interface PlayersState {
-    picks: typeof initialPicks;
-}
-
-const initialPicks = {
+const initialState = {
     [PlayerPicks.GAVEL]: '',
     [PlayerPicks.BLACK_CAT]: '',
     [PlayerPicks.KILLED]: ''
-};
-
-const initialState: PlayersState = {
-    picks: initialPicks
 };
 
 export const settingsSlice = createSlice({
@@ -27,17 +19,11 @@ export const settingsSlice = createSlice({
     reducers: {
         setPicked: (state, action: PayloadAction<{ name: string; pickedFor: PlayerPicks }>) => ({
             ...state,
-            picks: {
-                ...state.picks,
-                [action.payload.pickedFor]: action.payload.name
-            }
+            [action.payload.pickedFor]: action.payload.name
         }),
         resetPick: (state, action: PayloadAction<PlayerPicks>) => ({
             ...state,
-            picks: {
-                ...state.picks,
-                [action.payload]: ''
-            }
+            [action.payload]: ''
         })
     }
 });
