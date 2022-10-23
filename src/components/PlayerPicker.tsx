@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button } from 'react-native-paper';
+import { ScrollView } from 'react-native';
 import { PlayersState } from '../redux/slices/players';
 import { PlayerPicks, setPicked } from '../redux/slices/picks';
 import { useAppDispatch } from '../redux/hooks';
@@ -25,17 +26,19 @@ export default function PlayerPicker(props: PickerProps) {
 
     return (
         <div className="playerPicker">
-            {list.map((player) => (
-                <Button
-                    key={player}
-                    mode="outlined"
-                    onPress={() => {
-                        dispatch(setPicked({ name: player, pickedFor }));
-                        onPlayerPicked(player);
-                    }}>
-                    {player}
-                </Button>
-            ))}
+            <ScrollView style={{ maxHeight: '75%', flexGrow: 0 }}>
+                {list.map((player) => (
+                    <Button
+                        key={player}
+                        mode="outlined"
+                        onPress={() => {
+                            dispatch(setPicked({ name: player, pickedFor }));
+                            onPlayerPicked(player);
+                        }}>
+                        {player}
+                    </Button>
+                ))}
+            </ScrollView>
         </div>
     );
 }

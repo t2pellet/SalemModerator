@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button } from 'react-native-paper';
+import { ScrollView } from 'react-native';
 import { PlayersState } from '../redux/slices/players';
 import FormTextInput from './form/FormTextInput';
 
@@ -28,16 +29,18 @@ export default function PlayersForm(props: PlayersProps) {
 
     return (
         <div className="players-form">
-            {fields.map((field, index) => (
-                <FormTextInput
-                    key={field.id}
-                    name={`players.${index}.name`}
-                    control={control}
-                    placeHolder={`Player ${index + 1} Name`}
-                    rules={{ required: true }}
-                    errMsg="Must enter player name"
-                />
-            ))}
+            <ScrollView style={{ maxHeight: '75%', flexGrow: 0 }}>
+                {fields.map((field, index) => (
+                    <FormTextInput
+                        key={field.id}
+                        name={`players.${index}.name`}
+                        control={control}
+                        placeHolder={`Player ${index + 1} Name`}
+                        rules={{ required: true }}
+                        errMsg="Must enter player name"
+                    />
+                ))}
+            </ScrollView>
             <Button mode="contained" onPress={handleSubmit(onPlayersSubmit)}>
                 Start
             </Button>
