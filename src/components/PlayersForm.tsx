@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { Button } from 'react-native-paper';
 import { PlayersState } from '../redux/slices/players';
+import FormTextInput from './form/FormTextInput';
 
 export interface PlayersProps {
     players: PlayersState;
@@ -17,7 +19,7 @@ export default function PlayersForm(props: PlayersProps) {
         onPlayersSubmit,
         players: { list }
     } = props;
-    const { register, control, handleSubmit } = useForm<PlayersData>({
+    const { control, handleSubmit } = useForm<PlayersData>({
         defaultValues: {
             players: list.map((name) => ({ name }))
         }
@@ -26,18 +28,19 @@ export default function PlayersForm(props: PlayersProps) {
 
     return (
         <div className="players-form">
-            <form onSubmit={handleSubmit(onPlayersSubmit)}>
-                {fields.map((field, index) => (
-                    <input
-                        type="text"
-                        key={field.id}
-                        {...register(`players.${index}.name` as const)}
-                        placeholder="Player name"
-                        autoCapitalize="true"
-                    />
-                ))}
-                <input type="submit" value="Start" />
-            </form>
+            {fields.map((field, index) => (
+                <FormTextInput
+                    key={field.id}
+                    name={`players.${index}.name`}
+                    control={control}
+                    placeHolder={`Player ${index + 1} Name`}
+                    rules={{ required: true }}
+                    errMsg="Must enter player name"
+                />
+            ))}
+            <Button mode="contained" onPress={handleSubmit(onPlayersSubmit)}>
+                Start
+            </Button>
         </div>
     );
 }

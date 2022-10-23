@@ -10,7 +10,7 @@ type FormTextInputProps = {
     errMsg?: string;
 };
 
-function FormTextInput({ name, control, rules, label, errMsg }: FormTextInputProps) {
+function FormCheckbox({ name, control, rules, label, errMsg }: FormTextInputProps) {
     return (
         <Controller
             name={name}
@@ -31,9 +31,9 @@ function FormTextInput({ name, control, rules, label, errMsg }: FormTextInputPro
     );
 }
 
-FormTextInput.defaultProps = {
+FormCheckbox.defaultProps = {
     rules: {},
     errMsg: 'Invalid input'
 };
 
-export default FormTextInput;
+export default FormCheckbox;
