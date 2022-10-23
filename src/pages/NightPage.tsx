@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import AudioPlayer from '../components/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
 import PlayerPicker from '../components/PlayerPicker';
-import { PlayerPicks } from '../redux/slices/players';
+import { PlayerPicks } from '../redux/slices/picks';
 
 enum StepEnum {
     NIGHT_START = 'night_start',

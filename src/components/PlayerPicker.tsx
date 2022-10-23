@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { PlayerPicks, PlayersState, setPicked } from '../redux/slices/players';
+import { PlayersState } from '../redux/slices/players';
+import { PlayerPicks, setPicked } from '../redux/slices/picks';
 import { useAppDispatch } from '../redux/hooks';
 
 interface PickerProps {

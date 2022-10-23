@@ -8,7 +8,7 @@ import { dawn } from '../utils/sounds';
 import Timer from '../components/Timer';
 import AudioPlayer from '../components/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
-import { PlayerPicks } from '../redux/slices/players';
+import { PlayerPicks } from '../redux/slices/picks';
 
 enum StepEnum {
     DAWN_START = 'dawn_start',

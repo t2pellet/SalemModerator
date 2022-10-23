@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import settingsReducer from './slices/settings';
 import playersReducer from './slices/players';
 import timerReducer from './slices/timer';
+import picksReducer from './slices/picks';
 
 const persistConfig = {
     key: 'root',
@@ -18,7 +19,8 @@ const persistentReducers = combineReducers({
 export const store = configureStore({
     reducer: {
         data: persistReducer(persistConfig, persistentReducers),
-        timer: timerReducer
+        timer: timerReducer,
+        picks: picksReducer
     },
     devTools: process.env.NODE_ENV !== 'production'
 });

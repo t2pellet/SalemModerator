@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { PlayerPicks, resetPick } from '../redux/slices/players';
+import { PlayerPicks, resetPick } from '../redux/slices/picks';
 import DisplayPlayer from '../components/DisplayPlayer';
 import Timer from '../components/Timer';
 import { startTimer } from '../redux/slices/timer';
@@ -16,7 +16,7 @@ const actionSoundMap = {
 };
 
 export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
-    const { picks } = useAppSelector((state) => state.data.players);
+    const picks = useAppSelector((state) => state.picks);
     const { delayTime } = useAppSelector((state) => state.data.settings);
     const dispatch = useAppDispatch();
 
