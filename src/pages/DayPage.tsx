@@ -1,6 +1,7 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
+import { Button } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { PlayerPicks, resetPick } from '../redux/slices/picks';
 import DisplayPlayer from '../components/DisplayPlayer';
@@ -8,6 +9,9 @@ import Timer from '../components/Timer';
 import { startTimer } from '../redux/slices/timer';
 import AudioPlayer from '../components/AudioPlayer';
 import { actions } from '../utils/sounds';
+import styles from '../utils/styles';
+
+const logo = require('../assets/img/logo.png');
 
 const actionSoundMap = {
     [PlayerPicks.BLACK_CAT]: actions.blackCat,
@@ -50,21 +54,21 @@ export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
             return renderDisplay(PlayerPicks.KILLED, 'Killed by Witches', killed);
         }
         return (
-            <button
-                type="button"
-                onClick={() => {
+            <Button
+                mode="contained"
+                onPress={() => {
                     navigation.popToTop();
                     navigation.navigate('Night');
                 }}>
                 Nighttime
-            </button>
+            </Button>
         );
     };
 
     return (
-        <View>
+        <View style={styles.day}>
             <div className="dayPage">
-                <h1>Daytime</h1>
+                <Image source={logo} style={{ width: 300, height: 150 }} />
                 {renderBody()}
             </div>
         </View>
