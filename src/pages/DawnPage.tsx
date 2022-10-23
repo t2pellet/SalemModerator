@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AVPlaybackSource } from 'expo-av';
 import PlayerPicker from '../components/PlayerPicker';
@@ -9,6 +9,9 @@ import Timer from '../components/Timer';
 import AudioPlayer from '../components/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
 import { PlayerPicks } from '../redux/slices/picks';
+import styles from '../utils/styles';
+
+const logo = require('../assets/img/logo.png');
 
 enum StepEnum {
     DAWN_START = 'dawn_start',
@@ -59,7 +62,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
     };
 
     return (
-        <View>
+        <View style={styles.main}>
             <AudioPlayer
                 audioFile={step.audio}
                 onAudioEnded={() => {
@@ -68,6 +71,7 @@ function DawnPage(props: NativeStackScreenProps<any>) {
                     else setStepIndex(stepIndex + 1);
                 }}
             />
+            <Image source={logo} style={{ width: 300, height: 150 }} />
             {renderExtra()}
         </View>
     );
