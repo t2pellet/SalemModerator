@@ -6,7 +6,7 @@ import PlayerPicker from '../components/PlayerPicker';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { dawn } from '../utils/sounds';
 import Timer from '../components/Timer';
-import AudioPlayer from '../components/audio/AudioPlayer';
+import AudioPlayer from '../components/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
 import { PlayerPicks } from '../redux/slices/players';
 

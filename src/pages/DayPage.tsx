@@ -6,7 +6,7 @@ import { PlayerPicks, resetPick } from '../redux/slices/players';
 import DisplayPlayer from '../components/DisplayPlayer';
 import Timer from '../components/Timer';
 import { startTimer } from '../redux/slices/timer';
-import AudioPlayer from '../components/audio/AudioPlayer';
+import AudioPlayer from '../components/AudioPlayer';
 import { actions } from '../utils/sounds';
 
 const actionSoundMap = {

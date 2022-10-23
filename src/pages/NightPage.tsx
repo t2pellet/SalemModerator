@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { night } from '../utils/sounds';
 import Timer from '../components/Timer';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import AudioPlayer from '../components/audio/AudioPlayer';
+import AudioPlayer from '../components/AudioPlayer';
 import { startTimer } from '../redux/slices/timer';
 import PlayerPicker from '../components/PlayerPicker';
 import { PlayerPicks } from '../redux/slices/players';
