@@ -49,8 +49,10 @@ class Timer extends React.Component<TimerProps, TimerState> {
     componentWillUnmount() {
         const { timerKey, clearTimerState } = this.props;
 
-        clearInterval(this.interval);
-        clearTimerState(timerKey);
+        if (this.isActive()) {
+            clearInterval(this.interval);
+            clearTimerState(timerKey);
+        }
     }
 
     isActive(): boolean {
