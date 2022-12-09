@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ProgressBar, Text } from 'react-native-paper';
 import { clearTimer } from '../redux/slices/timer';
 
 interface TimerProps {
@@ -79,10 +80,18 @@ class Timer extends React.Component<TimerProps, TimerState> {
     }
 
     render() {
+        const { time } = this.props;
         const { timeLeft } = this.state;
+        const timeInSeconds = Math.floor(timeLeft / 1000);
+        const timeFraction = timeLeft / (time * 1000);
 
         if (this.isActive()) {
-            return <span>{timeLeft}</span>;
+            return (
+                <div className="timer">
+                    <ProgressBar animatedValue={timeFraction} />
+                    <Text>{timeInSeconds}</Text>
+                </div>
+            );
         }
 
         return null;
