@@ -26,11 +26,18 @@ export default function SettingsForm(props: SettingsProps) {
                 errMsg="Must enter player count between 4 and 12"
             />
             <FormTextInput
-                name="delayTime"
+                name="confessionTime"
                 control={control}
                 rules={{ required: true, min: 5, max: 30 }}
-                label="Delay Time"
-                errMsg="Must enter delay time between 5 and 30"
+                label="Confession Time"
+                errMsg="Must enter confession time between 5 and 30"
+            />
+            <FormTextInput
+                name="displayTime"
+                control={control}
+                rules={{ required: true, min: 1, max: 10 }}
+                label="Choice Display Time"
+                errMsg="Must enter display time between 1 and 10"
             />
             <FormCheckbox name="constableEnabled" control={control} label="Using Constable" />
             <Button mode="contained" onPress={handleSubmit(onSettingsSubmit)}>

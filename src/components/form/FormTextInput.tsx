@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { TextInput } from 'react-native-paper';
+import { Text, TextInput } from 'react-native-paper';
 
 type FormTextInputProps = {
     name: string;
@@ -25,7 +25,7 @@ function FormTextInput({ name, control, rules, label, errMsg, placeHolder }: For
                         label={label}
                         placeholder={placeHolder}
                     />
-                    {error && <span>{errMsg}</span>}
+                    {error && <Text style={{ color: 'red' }}>{errMsg}</Text>}
                 </>
             )}
         />

@@ -21,14 +21,14 @@ const actionSoundMap = {
 
 export default function DayPage({ navigation }: NativeStackScreenProps<any>) {
     const picks = useAppSelector((state) => state.picks);
-    const { delayTime } = useAppSelector((state) => state.data.settings);
+    const { displayTime } = useAppSelector((state) => state.data.settings);
     const dispatch = useAppDispatch();
 
     const renderDisplay = (pick: PlayerPicks, description: string, name: string) => (
         <>
             <Timer
                 timerKey={pick.toString()}
-                time={delayTime}
+                time={displayTime}
                 onTimeEnded={() => dispatch(resetPick(pick))}
             />
             <AudioPlayer

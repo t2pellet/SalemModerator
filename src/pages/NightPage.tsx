@@ -3,13 +3,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AVPlaybackSource } from 'expo-av';
 import { Image, View } from 'react-native';
 import { night } from '../utils/sounds';
-import Timer from '../components/Timer';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import AudioPlayer from '../components/AudioPlayer';
-import { startTimer } from '../redux/slices/timer';
 import PlayerPicker from '../components/PlayerPicker';
 import { PlayerPicks } from '../redux/slices/picks';
 import styles from '../utils/styles';
+import Timer from '../components/Timer';
+import { startTimer } from '../redux/slices/timer';
 
 const logo = require('../assets/img/logo.png');
 
@@ -40,9 +40,8 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
     const [stepIndex, setStepIndex] = React.useState(0);
     const { navigation } = props;
     const players = useAppSelector((state) => state.data.players);
-    const { delayTime, constableEnabled } = useAppSelector((state) => state.data.settings);
     const dispatch = useAppDispatch();
-    const setTimer = (key: string) => dispatch(startTimer(key));
+    const { constableEnabled, confessionTime } = useAppSelector((state) => state.data.settings);
     const step = steps[stepIndex];
 
     const renderExtra = (key: StepEnum) => {
@@ -58,6 +57,14 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
                         }
                     />
                 );
+            case StepEnum.NIGHT_END:
+                return (
+                    <Timer
+                        time={confessionTime}
+                        timerKey="confession"
+                        onTimeEnded={() => navigation.navigate('Day')}
+                    />
+                );
             default:
                 return null;
         }
@@ -65,24 +72,31 @@ export default function NightPage(props: NativeStackScreenProps<any>) {
 
     return (
         <View style={styles.main}>
-            <Timer
-                timerKey={step.key}
-                time={delayTime}
-                onTimeEnded={() => {
-                    if (step.key === StepEnum.NIGHT_END) navigation.navigate('Day');
-                    else if (step.key === StepEnum.WITCH_END) {
-                        let nextIndex = stepIndex + 1;
-                        if (!constableEnabled) nextIndex += 2;
-                        setStepIndex(nextIndex);
-                    } else setStepIndex(stepIndex + 1);
-                }}
-            />
             <AudioPlayer
                 audioFile={steps[stepIndex].audio}
-                onAudioEnded={() => setTimer(step.key)}
+                onAudioEnded={() => {
+                    switch (step.key) {
+                        case StepEnum.WITCH_END:
+                            if (!constableEnabled) {
+                                setStepIndex(steps.length - 1);
+                            } else setStepIndex(stepIndex + 1);
+                            break;
+                        case StepEnum.NIGHT_START:
+                        case StepEnum.CONSTABLE_END:
+                            setStepIndex(stepIndex + 1);
+                            break;
+                        case StepEnum.NIGHT_END:
+                            dispatch(startTimer('confession'));
+                            break;
+                        default:
+                            break;
+                    }
+                }}
             />
-            <Image source={logo} style={{ width: 300, height: 150 }} />
-            {renderExtra(step.key)}
+            <div className="nightPage">
+                <Image source={logo} style={{ width: 300, height: 150 }} />
+                {renderExtra(step.key)}
+            </div>
         </View>
     );
 }

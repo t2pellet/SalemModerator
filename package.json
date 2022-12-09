@@ -13,11 +13,6 @@
     "lint": "tsc --noEmit && eslint --fix --ext .js,.jsx,.ts,.tsx ./"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-brands-svg-icons": "^6.2.0",
-    "@fortawesome/free-regular-svg-icons": "^6.2.0",
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@reduxjs/toolkit": "^1.8.6",
@@ -29,7 +24,6 @@
     "react-hook-form": "^7.37.0",
     "react-live-timer": "^0.3.3",
     "react-native": "~0.69.6",
-    "react-native-fontawesome": "^7.0.0",
     "react-native-paper": "^5.0.0-rc.8",
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
