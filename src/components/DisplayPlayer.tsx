@@ -12,6 +12,7 @@ export default function DisplayPlayer(props: DisplayProps) {
     return (
         <div className="displayPlayer" style={{ textAlign: 'center' }}>
             <Text variant="displayMedium">{playerName}</Text>
+            <br />
             <Text variant="bodyMedium">{description}</Text>
         </div>
     );
